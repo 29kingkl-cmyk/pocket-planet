@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#eaf4ed">
+    <title>Pocket Planet - a tiny clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="game.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="#" aria-label="Pocket Planet home">
+          <span class="wordmark-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9" fill="currentColor"/><ellipse cx="16" cy="16" rx="14" ry="5.5" transform="rotate(-28 16 16)" stroke="currentColor" stroke-width="2"/><circle cx="26.2" cy="9.1" r="2" fill="#f07159"/></svg>
+          </span>
+          <span>pocket<span class="wordmark-light">planet</span></span>
+        </a>
+        <div class="topbar-right">
+          <span class="save-state"><span class="save-dot"></span> autosaved</span>
+          <button class="icon-button" id="reset-button" type="button" aria-label="Reset game" title="Reset game">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 11a8.5 8.5 0 1 1 2.1 5.6M3.5 11V5.5M3.5 11H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">YOUR VERY OWN TINY WORLD</p>
+            <h1 id="page-title">A little planet, <span>a lot of potential.</span></h1>
+          </div>
+          <p class="intro-note">Tap the planet. Gather stardust.<br>See what grows.</p>
+        </section>
+
+        <section class="game-layout" aria-label="Clicker game">
+          <section class="planet-panel" aria-label="Your planet">
+            <div class="planet-panel-head">
+              <div><span class="live-indicator"></span><span class="panel-kicker">PLANET 001</span></div>
+              <span class="world-age" id="world-age">DAY 01</span>
+            </div>
+
+            <div class="sky-scene">
+              <span class="sky-label">A small beginning</span>
+              <span class="spark spark-one" aria-hidden="true">✦</span>
+              <span class="spark spark-two" aria-hidden="true">✳</span>
+              <span class="spark spark-three" aria-hidden="true">·</span>
+              <div class="orbit orbit-back" aria-hidden="true"></div>
+              <button class="planet-button" id="planet-button" type="button" aria-label="Tap the planet to collect stardust">
+                <span class="planet-aura"></span>
+                <svg class="planet-art" viewBox="0 0 240 240" role="img" aria-label="A tiny green planet with a sprout">
+                  <defs>
+                    <radialGradient id="planetFill" cx="35%" cy="28%" r="75%"><stop offset="0" stop-color="#d7f18b"/><stop offset=".58" stop-color="#8ecb78"/><stop offset="1" stop-color="#438c69"/></radialGradient>
+                    <clipPath id="planetClip"><circle cx="120" cy="124" r="76"/></clipPath>
+                  </defs>
+                  <ellipse cx="120" cy="124" rx="112" ry="35" transform="rotate(-17 120 124)" fill="none" stroke="#365b52" stroke-width="3" opacity=".36"/>
+                  <circle cx="120" cy="124" r="76" fill="url(#planetFill)"/>
+                  <g clip-path="url(#planetClip)">
+                    <path d="M38 142c25-11 40-4 55 4 19 10 38 9 57-2 17-10 38-8 60 2v55H38z" fill="#467d66" opacity=".78"/>
+                    <path d="M49 91c17-15 36-18 50-8-4 15-17 24-37 23-8-1-13-6-13-15Z" fill="#b9df83" opacity=".82"/>
+                    <path d="M155 158c12-12 26-13 41-3-8 15-24 21-41 14-4-3-4-7 0-11Z" fill="#c8e788" opacity=".85"/>
+                    <path d="M94 169c7-6 17-6 26 1-7 11-18 15-29 8-3-3-2-6 3-9Z" fill="#d5ee99" opacity=".72"/>
+                    <circle cx="144" cy="84" r="8" fill="#e5f5bc" opacity=".38"/>
+                  </g>
+                  <path d="M119 54c0-20 8-31 22-37" fill="none" stroke="#315b48" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M137 24c13-14 30-9 31 3-9 11-23 13-31-3Z" fill="#f07159"/>
+                  <path d="M120 40c-13-15-29-12-32 0 8 12 21 16 32 0Z" fill="#70a969"/>
+                  <ellipse cx="94" cy="91" rx="23" ry="10" transform="rotate(-28 94 91)" fill="#fff" opacity=".13"/>
+                </svg>
+                <span class="tap-prompt">TAP TO GROW</span>
+              </button>
+              <div class="orbit orbit-front" aria-hidden="true"><span class="orbit-moon"></span></div>
+              <span class="scene-caption">somewhere, a seed is waking up</span>
+              <div id="float-layer" class="float-layer" aria-hidden="true"></div>
+            </div>
+
+            <div class="planet-footer">
+              <div class="resource-block">
+                <span class="resource-label">STARDUST</span>
+                <div class="resource-total"><span class="dust-icon" aria-hidden="true">✦</span><span id="dust-count" aria-live="polite">0</span></div>
+              </div>
+              <div class="footer-divider"></div>
+              <div class="resource-block rate-block">
+                <span class="resource-label">PER SECOND</span>
+                <div class="rate-value"><span id="per-second">0</span><span class="rate-unit">dust</span></div>
+              </div>
+              <div class="footer-divider"></div>
+              <div class="resource-block rate-block">
+                <span class="resource-label">PER TAP</span>
+                <div class="rate-value"><span id="per-tap">1</span><span class="rate-unit">dust</span></div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="shop-panel" aria-label="Planet upgrades">
+            <div class="shop-heading">
+              <div>
+                <p class="eyebrow">MAKE IT THRIVE</p>
+                <h2>Little upgrades</h2>
+              </div>
+              <span class="shop-count" id="upgrade-count">0 owned</span>
+            </div>
+
+            <div class="upgrade-list">
+              <article class="upgrade-item">
+                <div class="upgrade-icon sprout-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" fill="none"><path d="M20 31V19m0 5c-9 0-13-5-12-12 8-1 13 3 12 12Zm0-5c0-8 4-13 12-13 1 8-3 13-12 13Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="upgrade-copy">
+                  <div class="upgrade-title-row"><h3>Moon sprouts</h3><span class="owned-count" id="sprouts-owned">0</span></div>
+                  <p>Each tap gives <span id="sprout-effect">+1</span> more dust.</p>
+                  <span class="upgrade-cost"><span aria-hidden="true">✦</span> <span id="sprout-cost">15</span></span>
+                </div>
+                <button class="buy-button" id="buy-sprout" type="button" aria-label="Buy Moon sprouts">+</button>
+              </article>
+
+              <article class="upgrade-item">
+                <div class="upgrade-icon moon-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" fill="none"><path d="M28.8 25.4A13 13 0 0 1 14.6 11.2a13 13 0 1 0 14.2 14.2Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m27 9 1.2 2.8L31 13l-2.8 1.2L27 17l-1.2-2.8L23 13l2.8-1.2L27 9Z" fill="currentColor"/></svg>
+                </div>
+                <div class="upgrade-copy">
+                  <div class="upgrade-title-row"><h3>Moonbeams</h3><span class="owned-count" id="beams-owned">0</span></div>
+                  <p>Gently gathers <span id="beam-effect">1</span> dust each second.</p>
+                  <span class="upgrade-cost"><span aria-hidden="true">✦</span> <span id="beam-cost">30</span></span>
+                </div>
+                <button class="buy-button" id="buy-beam" type="button" aria-label="Buy Moonbeams">+</button>
+              </article>
+            </div>
+
+            <div class="next-goal" aria-live="polite">
+              <div class="goal-topline"><span class="goal-label">NEXT MILESTONE</span><span id="goal-progress-text">0 / 100</span></div>
+              <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+              <p id="goal-message">Your first little moon is 100 dust away.</p>
+            </div>
+
+            <div class="tiny-note"><span aria-hidden="true">✳</span><p>Your planet keeps growing while you’re here.</p></div>
+          </aside>
+        </section>
+
+        <footer class="page-footer"><span>POCKET PLANET</span><span>A very small universe, made by you.</span></footer>
+      </main>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </body>
+</html>
